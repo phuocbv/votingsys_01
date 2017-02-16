@@ -136,88 +136,90 @@
                          data-status-open="{{ trans('polls.label.poll_opening') }}"
                          data-tooltip-open="{{ trans('polls.tooltip.open') }}"
                          data-tooltip-close="{{ trans('polls.tooltip.close') }}"></div>
-                <table class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th>{{ trans('polls.table.thead.STT') }}</th>
-                            <th>{{ trans('polls.table.thead.creator') }}</th>
-                            <th>{{ trans('polls.table.thead.title') }}</th>
-                            <th>{{ trans('polls.table.thead.type') }}</th>
-                            <th>
-                               {{ trans('polls.table.thead.link') }}
-                            </th>
-                            <th>{{ trans('polls.table.thead.status') }}</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($polls as $poll)
+                <div class="table-poll-list">
+                    <table class="table table-bordered table-hover">
+                        <thead>
                             <tr>
-                                <td>{{ $loop->index + 1 }}</td>
-                                <td>
-                                    {{ trans('polls.table.tbody.name') .  $poll->user->name}}<br>
-                                    {{ trans('polls.table.tbody.email') . $poll->user->email }}
-                                </td>
-                                <td>{{ str_limit($poll->title, 50) }}</td>
-                                <td>{{ $poll->multiple }}</td>
-                                <td>
-                                     <b>{{ trans('polls.table.tbody.link_participant') }}</b> <br>
-                                     {{ (empty($links['participant'][$poll->id])) ? "" : $links['participant'][$poll->id] }}<br>
-                                    <b>{{ trans('polls.table.tbody.link_administration') }}</b> <br>
-                                     {{ (empty($links['administration'][$poll->id])) ? "" : $links['administration'][$poll->id] }}
-                                </td>
+                                <th>{{ trans('polls.table.thead.STT') }}</th>
+                                <th>{{ trans('polls.table.thead.creator') }}</th>
+                                <th>{{ trans('polls.table.thead.title') }}</th>
+                                <th>{{ trans('polls.table.thead.type') }}</th>
+                                <th>
+                                   {{ trans('polls.table.thead.link') }}
+                                </th>
+                                <th>{{ trans('polls.table.thead.status') }}</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($polls as $poll)
+                                <tr>
+                                    <td>{{ $loop->index + 1 }}</td>
+                                    <td>
+                                        {{ trans('polls.table.tbody.name') .  $poll->user->name}}<br>
+                                        {{ trans('polls.table.tbody.email') . $poll->user->email }}
+                                    </td>
+                                    <td>{{ str_limit($poll->title, 50) }}</td>
+                                    <td>{{ $poll->multiple }}</td>
+                                    <td>
+                                         <b>{{ trans('polls.table.tbody.link_participant') }}</b> <br>
+                                         {{ (empty($links['participant'][$poll->id])) ? "" : $links['participant'][$poll->id] }}<br>
+                                        <b>{{ trans('polls.table.tbody.link_administration') }}</b> <br>
+                                         {{ (empty($links['administration'][$poll->id])) ? "" : $links['administration'][$poll->id] }}
+                                    </td>
 
-                                <td id="status_{{ $poll->id }}">{!! $poll->status !!}</td>
-                                <td>
-                                    {{
-                                        Form::open([
-                                            'route' => ['admin.poll.destroy', $poll->id],
-                                            'method' => 'DELETE',
-                                            'onsubmit' => 'return confirmDelete("' . trans('polls.message.confirm_delete') . '")',
-                                        ])
-                                    }}
-
-                                        <!-- BUTTON OPEN POLL -->
-                                        @if ($poll->status == trans('polls.label.poll_closed'))
-                                            <button type="button" id="btn_{{ $poll->id }}" onclick="changeStatusOfPoll({{ $poll->id }})"
-                                               class="btn bg-brown btn-xs" data-toggle="tooltip" data-placement="top"
-                                               title="" data-original-title="{{ trans('polls.tooltip.open') }}">
-                                                <i class="material-icons">lock_open</i>
-                                            </button>
-                                        @else
-
-                                        <!-- BUTTON CLOSE POLL -->
-                                            <button type="button" id="btn_{{ $poll->id }}" onclick="changeStatusOfPoll({{ $poll->id }})"
-                                               class="btn bg-brown btn-xs" data-toggle="tooltip" data-placement="top"
-                                               title="" data-original-title="{{ trans('polls.tooltip.close') }}">
-                                                <i class="material-icons">lock</i>
-                                            </button>
-                                        @endif
-
-                                        <!-- BUTTON EDIT POLL -->
-                                        <a href="{{ route('admin.poll.edit', ['id' => $poll->id]) }}"
-                                            class="btn bg-orange btn-xs" data-toggle="tooltip" data-placement="top"
-                                           title="" data-original-title="{{ trans('polls.tooltip.edit') }}">
-                                            <i class="material-icons">edit</i>
-                                        </a>
-
-                                        <!-- BUTTON DELETE POLL -->
+                                    <td id="status_{{ $poll->id }}">{!! $poll->status !!}</td>
+                                    <td>
                                         {{
-                                            Form::button('<i class="material-icons">delete</i>', [
-                                                'type' => 'submit',
-                                                'class' => 'btn bg-red btn-xs',
-                                                'data-toggle' => 'tooltip',
-                                                'data-placement' => 'top',
-                                                'title' => '',
-                                                'data-original-title' => trans('polls.tooltip.delete')
+                                            Form::open([
+                                                'route' => ['admin.poll.destroy', $poll->id],
+                                                'method' => 'DELETE',
+                                                'onsubmit' => 'return confirmDelete("' . trans('polls.message.confirm_delete') . '")',
                                             ])
                                         }}
-                                    {{ Form::close() }}
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+
+                                            <!-- BUTTON OPEN POLL -->
+                                            @if ($poll->status == trans('polls.label.poll_closed'))
+                                                <button type="button" id="btn_{{ $poll->id }}" onclick="changeStatusOfPoll({{ $poll->id }})"
+                                                   class="btn bg-brown btn-xs" data-toggle="tooltip" data-placement="top"
+                                                   title="" data-original-title="{{ trans('polls.tooltip.open') }}">
+                                                    <i class="material-icons">lock_open</i>
+                                                </button>
+                                            @else
+
+                                            <!-- BUTTON CLOSE POLL -->
+                                                <button type="button" id="btn_{{ $poll->id }}" onclick="changeStatusOfPoll({{ $poll->id }})"
+                                                   class="btn bg-brown btn-xs" data-toggle="tooltip" data-placement="top"
+                                                   title="" data-original-title="{{ trans('polls.tooltip.close') }}">
+                                                    <i class="material-icons">lock</i>
+                                                </button>
+                                            @endif
+
+                                            <!-- BUTTON EDIT POLL -->
+                                            <a href="{{ route('admin.poll.edit', ['id' => $poll->id]) }}"
+                                                class="btn bg-orange btn-xs" data-toggle="tooltip" data-placement="top"
+                                               title="" data-original-title="{{ trans('polls.tooltip.edit') }}">
+                                                <i class="material-icons">edit</i>
+                                            </a>
+
+                                            <!-- BUTTON DELETE POLL -->
+                                            {{
+                                                Form::button('<i class="material-icons">delete</i>', [
+                                                    'type' => 'submit',
+                                                    'class' => 'btn bg-red btn-xs',
+                                                    'data-toggle' => 'tooltip',
+                                                    'data-placement' => 'top',
+                                                    'title' => '',
+                                                    'data-original-title' => trans('polls.tooltip.delete')
+                                                ])
+                                            }}
+                                        {{ Form::close() }}
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
                 <div class="dataTables_info">
                     {{
                         trans_choice('label.paginations', $polls->total(), [
